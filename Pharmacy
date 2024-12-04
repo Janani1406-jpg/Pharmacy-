@@ -1,0 +1,140 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+
+public class PharmacyManagementSystem extends Frame {
+    
+    // Declare UI components
+    private Label lblName, lblMedName, lblQuantity, lblPrescription;
+    private TextField txtName, txtMedName, txtQuantity, txtPrescription;
+    private Button btnVerify, btnDispense, btnExit;
+    private TextArea txtAreaRecords;
+    private ArrayList<String> records;
+    
+    public PharmacyManagementSystem() {
+        // Set frame properties
+        setTitle("Pharmacy Management System");
+        setSize(500, 400);
+        setLayout(new FlowLayout());
+        
+        // Initialize UI components
+        lblName = new Label("Patient Name:");
+        lblMedName = new Label("Medication Name:");
+        lblQuantity = new Label("Quantity:");
+        lblPrescription = new Label("Prescription ID:");
+        
+        txtName = new TextField(20);
+        txtMedName = new TextField(20);
+        txtQuantity = new TextField(20);
+        txtPrescription = new TextField(20);
+        
+        btnVerify = new Button("Verify Prescription");
+        btnDispense = new Button("Dispense Medication");
+        btnExit = new Button("Exit");
+        
+        txtAreaRecords = new TextArea(10, 40);
+        txtAreaRecords.setEditable(false);
+        
+        records = new ArrayList<>();
+        
+        // Add components to the frame
+        add(lblName);
+        add(txtName);
+        add(lblMedName);
+        add(txtMedName);
+        add(lblQuantity);
+        add(txtQuantity);
+        add(lblPrescription);
+        add(txtPrescription);
+        
+        add(btnVerify);
+        add(btnDispense);
+        add(btnExit);
+        
+        add(new Label("Dispensed Records:"));
+        add(txtAreaRecords);
+        
+        // Event handling
+        btnVerify.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                verifyPrescription();
+            }
+        });
+        
+        btnDispense.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispenseMedication();
+            }
+        });
+        
+        btnExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                exitSystem();
+            }
+        });
+        
+        // Close window event
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+        
+        // Make the frame visible
+        setVisible(true);
+    }
+    
+    // Verify the prescription details
+    private void verifyPrescription() {
+        String patientName = txtName.getText();
+        String medicationName = txtMedName.getText();
+        String quantity = txtQuantity.getText();
+        String prescriptionId = txtPrescription.getText();
+        
+        if (patientName.isEmpty() || medicationName.isEmpty() || quantity.isEmpty() || prescriptionId.isEmpty()) {
+            showMessage("All fields are required for verification!");
+        } else {
+            showMessage("Prescription verified successfully!");
+        }
+    }
+    
+    // Dispense medication and add to records
+    private void dispenseMedication() {
+        String patientName = txtName.getText();
+        String medicationName = txtMedName.getText();
+        String quantity = txtQuantity.getText();
+        String prescriptionId = txtPrescription.getText();
+        
+        if (patientName.isEmpty() || medicationName.isEmpty() || quantity.isEmpty() || prescriptionId.isEmpty()) {
+            showMessage("Please fill out all fields to dispense medication.");
+        } else {
+            String record = "Patient: " + patientName + ", Medication: " + medicationName + ", Quantity: " + quantity + ", Prescription ID: " + prescriptionId;
+            records.add(record);
+            updateRecords();
+            showMessage("Medication dispensed successfully!");
+        }
+    }
+    
+    // Update the displayed records
+    private void updateRecords() {
+        txtAreaRecords.setText("");
+        for (String record : records) {
+            txtAreaRecords.append(record + "\n");
+        }
+    }
+    
+    // Display a message dialog
+    private void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+    
+    // Exit the system
+    private void exitSystem() {
+        System.exit(0);
+    }
+    
+    public static void main(String[] args) {
+        new PharmacyManagementSystem();
+    }
+}
